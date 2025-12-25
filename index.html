@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文化祭公式サイト</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+  <div id="bgOverlay" class="bg-overlay" aria-hidden="true"></div>
+
+  <noscript class="no-js-warning">JavaScript が無効になっているため、サイトの一部コンテンツが表示されません。ブラウザの設定で JavaScript を有効にするか、ローカルサーバーで確認してください。</noscript>
+
+<header class="site-header">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="top-left">文化祭 2026 — 11/03</div>
+      <div class="top-right">
+        <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener" class="top-social">Instagram</a>
+        <a href="assets/map.pdf" download class="top-cta">校内マップ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="文化祭ロゴ" class="logo" onerror="this.style.display='none'">
+      <div class="brand-text">
+        <h1 class="brand-title">文化祭2025 公式サイト</h1>
+        <p class="brand-sub">学生が作る、地域とつながる2日間のフェスティバル</p>
+      </div>
+    </div>
+
+    <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+
+    <nav id="mainNav" class="nav">
+      <a href="index.html">ホーム</a>
+      <a href="projects.html">企画紹介</a>
+      <a href="timetable.html">タイムテーブル</a>
+      <a href="info.html">インフォ</a>
+      <a href="blog.html">ブログ</a>
+      
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero card">
+    <div class="hero-inner">
+      <div>
+        <h2 class="hero-title">文化祭まで</h2>
+        <p id="countdown" class="hero-countdown" aria-live="polite"></p>
+        <p class="hero-sub">2025年10月20日 9:00 開始予定</p>
+        <a href="projects.html" class="button">企画を見る</a>
+      </div>
+      <div class="hero-illustration" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <div id="contentArea">
+    <!-- YAML の内容を静的に埋め込んであります（news, map, poster, highlights） -->
+    <section class="card" id="news">
+      <h2>最新情報</h2>
+      <p>公式Instagramはフッターのリンクからご覧ください。最新のお知らせや写真を随時投稿します。加えて、当日はタイムテーブルの変更や当日の見どころ、来場者向けの注意事項などを随時発信します。特に天候に関わる変更や入場整理の案内はInstagramのストーリーズで速報を出す予定です。</p>
+    </section>
+
+    <section class="card" id="map">
+      <h2>校内マップ</h2>
+      <p>来場者向けの校内案内図です。</p>
+      <a href="assets/map.pdf" download class="button">📄 校内マップPDFを開く</a>
+    </section>
+
+    <section class="card" id="poster">
+      <h2>ポスター</h2>
+      <p>今年の公式ポスターです。会場内の掲示や申込窓口で配布します。ポスターには見どころや会場配置のQRコードも掲載していますので、来場前に一度ご確認ください。</p>
+      <img src="assets/sample-poster.jpg" alt="公式ポスター" style="max-width:320px;border-radius:10px;margin-top:0.6rem;">
+    </section>
+
+    <section class="card" id="highlights">
+      <h2>イベントハイライト</h2>
+      <p>今年の文化祭では、学生主体のパフォーマンスやワークショップが豊富に揃っています。午前は吹奏楽部の演奏でスタートし、午後には演劇部の上演や有志によるステージ企画が続きます。また、科学部のサイエンスショーや家庭科のスイーツ販売など、子どもから大人まで楽しめる企画が目白押しです。各企画の開催時間や場所はタイムテーブルをご確認ください。</p>
+    </section>
+  </div>
+
+  <!-- ページ内でヒーロー日付などを script.js に渡す（fetch を待たずにカウントダウンが動きます） -->
+  <script>
+    window.__heroDate = '2026-11-03T09:00:00';
+    window.__heroTitle = '文化祭まで';
+    window.__heroSubtitle = '2026年11月03日 9:00 開始予定';
+    window.__heroCta = { text: '企画を見る', url: 'projects.html' };
+  </script>
+
+  <!-- フォールバック/静的なカード（YAML がない場合に表示される簡易コンテンツ） -->
+  <section class="card">
+    <h2>校内マップ</h2>
+    <p>来場者向けの校内案内図です。</p>
+    <a href="assets/map.pdf" download class="button">📄 校内マップPDFを開く</a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>© <span id="currentYear"></span> 文化祭実行委員会</p>
+    <nav class="footer-nav">
+      <a href="projects.html">企画紹介</a>
+      <a href="timetable.html">タイムテーブル</a>
+      <a href="assets/map.pdf" download>校内マップ</a>
+    </nav>
+    <div id="footerSocial" class="footer-social" aria-hidden="false">
+      <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="white" opacity="0.95"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white" opacity="0.95"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

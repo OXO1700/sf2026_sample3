@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>タイムテーブル</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="top-left">文化祭 2026 — 11/03</div>
+      <div class="top-right">
+        <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener" class="top-social">Instagram</a>
+        <a href="assets/map.pdf" download class="top-cta">校内マップ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="文化祭ロゴ" class="logo" onerror="this.style.display='none'">
+      <div class="brand-text">
+        <h1 class="brand-title">タイムテーブル</h1>
+        <p class="brand-sub">2日間のスケジュールを見やすく表示します</p>
+      </div>
+    </div>
+
+    <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+
+    <nav id="mainNav" class="nav">
+      <a href="index.html">ホーム</a>
+      <a href="projects.html">企画紹介</a>
+      <a href="timetable.html">タイムテーブル</a>
+      <a href="info.html">インフォ</a>
+      <a href="blog.html">ブログ</a>
+      
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="card timetable-card">
+    <div class="timetable-controls">
+      <div class="timetable-title">
+        <h2>タイムテーブル</h2>
+        <p class="muted">各日のプログラム（写真は省略）。必要なら右上の印刷ボタンで印刷・保存してください。</p>
+      </div>
+      <div class="timetable-actions">
+        <!-- Print/ICS buttons removed per request -->
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="タイムテーブルの切替">
+      <button role="tab" aria-selected="true" class="tab active" data-target="#day1">1日目<br><span class="tab-sub">2025-10-20</span></button>
+      <button role="tab" aria-selected="false" class="tab" data-target="#day2">2日目<br><span class="tab-sub">2025-10-21</span></button>
+    </div>
+
+    <div class="tab-panels">
+      <div id="day1" class="tab-panel active" role="tabpanel">
+        <div class="timetable-grid">
+          <article class="event">
+            <time class="event-time">09:00</time>
+            <div class="event-body">
+              <h3 class="event-title">開会式</h3>
+              <p class="event-meta">会場: 講堂</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">09:30</time>
+            <div class="event-body">
+              <h3 class="event-title">吹奏楽部 ミニコンサート</h3>
+              <p class="event-meta">会場: 中庭ステージ</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">11:00</time>
+            <div class="event-body">
+              <h3 class="event-title">写真部 フォト展示</h3>
+              <p class="event-meta">会場: 美術室</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">12:00</time>
+            <div class="event-body">
+              <h3 class="event-title">昼休み</h3>
+              <p class="event-meta">飲食ブースで軽食をどうぞ</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">13:30</time>
+            <div class="event-body">
+              <h3 class="event-title">演劇部 上演</h3>
+              <p class="event-meta">会場: 体育館</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">15:00</time>
+            <div class="event-body">
+              <h3 class="event-title">科学部 サイエンスショー</h3>
+              <p class="event-meta">会場: 講堂ステージ</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div id="day2" class="tab-panel" role="tabpanel" hidden>
+        <div class="timetable-grid">
+          <article class="event">
+            <time class="event-time">09:30</time>
+            <div class="event-body">
+              <h3 class="event-title">吹奏楽部 再演</h3>
+              <p class="event-meta">会場: 中庭ステージ</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">10:30</time>
+            <div class="event-body">
+              <h3 class="event-title">美術部 作品展示</h3>
+              <p class="event-meta">会場: 展示室</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">11:30</time>
+            <div class="event-body">
+              <h3 class="event-title">家庭科 お菓子カフェ 開店</h3>
+              <p class="event-meta">会場: 食堂エリア</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">12:30</time>
+            <div class="event-body">
+              <h3 class="event-title">ワークショップ（手作り体験）</h3>
+              <p class="event-meta">会場: ワークショップルーム</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">14:00</time>
+            <div class="event-body">
+              <h3 class="event-title">文芸部 朗読会</h3>
+              <p class="event-meta">会場: 図書室ホール</p>
+            </div>
+          </article>
+
+          <article class="event">
+            <time class="event-time">15:30</time>
+            <div class="event-body">
+              <h3 class="event-title">クロージング / 表彰</h3>
+              <p class="event-meta">会場: 講堂</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="footer-inner">
+    <p>© <span id="currentYear"></span> 文化祭実行委員会</p>
+    <nav class="footer-nav">
+      <a href="projects.html">企画紹介</a>
+      <a href="index.html">ホーム</a>
+    </nav>
+    <div id="footerSocial" class="footer-social" aria-hidden="false">
+      <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="white" opacity="0.95"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white" opacity="0.95"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
+
+
+  <div id="bgOverlay" class="bg-overlay" aria-hidden="true"></div>

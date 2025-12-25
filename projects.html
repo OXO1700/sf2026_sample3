@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>企画紹介</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script defer src="assets/script.js"></script>
+  <style>
+    /* projects page specific small layout tweak */
+    main { max-width: 960px; margin: 1.2rem auto; padding: 0 1rem; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="top-left">文化祭 2026 — 11/03</div>
+      <div class="top-right">
+        <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener" class="top-social">Instagram</a>
+        <a href="assets/map.pdf" download class="top-cta">校内マップ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="文化祭ロゴ" class="logo" onerror="this.style.display='none'">
+      <div class="brand-text">
+        <h1 class="brand-title">企画紹介</h1>
+        <p class="brand-sub">今年の参加企画を一覧でご紹介します</p>
+      </div>
+    </div>
+
+    <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+
+    <nav id="mainNav" class="nav">
+      <a href="index.html">ホーム</a>
+      <a href="projects.html">企画紹介</a>
+      <a href="timetable.html">タイムテーブル</a>
+      <a href="info.html">インフォ</a>
+      <a href="blog.html">ブログ</a>
+      
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="projects-hero card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <div>
+        <h2 style="margin:0">今年の企画一覧</h2>
+        <p class="muted" style="margin:0.4rem 0 0">カテゴリーで絞り込み、検索で企画名を探せます。</p>
+      </div>
+      <div style="display:flex;gap:0.6rem;align-items:center;">
+        <input id="projectsSearch" class="search-bar" type="search" placeholder="企画を検索（例：お化け屋敷）" aria-label="企画を検索">
+      </div>
+    </div>
+  </section>
+
+  <section class="card filters">
+    <div class="filter-list">
+      <button class="filter-btn active" data-filter="*">すべて</button>
+      <button class="filter-btn" data-filter="stage">ステージ</button>
+      <button class="filter-btn" data-filter="exhibit">展示</button>
+      <button class="filter-btn" data-filter="food">模擬店</button>
+      <button class="filter-btn" data-filter="workshop">ワークショップ</button>
+    </div>
+  </section>
+
+  <div class="projects-grid" id="projectsGrid">
+    <!-- Project cards: add data-category and optional image -->
+    <article class="project-card" data-category="exhibit">
+      <img src="assets/sample1.jpg" alt="お化け屋敷" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>電気工学部「電工魂」</h3>
+        <p class="muted">中学棟4階奥　物理実験室にて、はんだ付けや、電子回路の実験を体験できます。</p>
+        <div class="badges"><span class="badge">展示</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="stage">
+      <img src="assets/sample2.jpg" alt="演劇部" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>演劇部「新作公演」</h3>
+        <p class="muted">本格的な劇場セットで上演します。演技にご期待ください。</p>
+        <div class="badges"><span class="badge">ステージ</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="stage">
+      <img src="assets/sample3.jpg" alt="吹奏楽" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>吹奏楽部「ミニコンサート」</h3>
+        <p class="muted">人気曲をそろえたステージです。</p>
+        <div class="badges"><span class="badge">ステージ</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="exhibit">
+      <img src="assets/sample4.jpg" alt="写真部展示" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>写真部「フォト展示」</h3>
+        <p class="muted">一年間の活動を振り返る写真展。</p>
+        <div class="badges"><span class="badge">展示</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="exhibit">
+      <img src="assets/sample5.jpg" alt="美術部" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>美術部「作品展示」</h3>
+        <p class="muted">絵画・立体作品を展示。</p>
+        <div class="badges"><span class="badge">展示</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="food">
+      <img src="assets/sample6.jpg" alt="お菓子カフェ" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>家庭科「お菓子カフェ」</h3>
+        <p class="muted">手作りスイーツとドリンクを提供。</p>
+        <div class="badges"><span class="badge">模擬店</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="stage">
+      <img src="assets/sample7.jpg" alt="サイエンスショー" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>科学部「サイエンスショー」</h3>
+        <p class="muted">目で見て楽しめる実験ショー。</p>
+        <div class="badges"><span class="badge">ステージ</span></div>
+      </div>
+    </article>
+
+    <article class="project-card" data-category="stage">
+      <img src="assets/sample8.jpg" alt="朗読会" class="project-thumb" onerror="this.style.display='none'">
+      <div class="project-body">
+        <h3>文芸部「朗読会」</h3>
+        <p class="muted">短編・詩の朗読。</p>
+        <div class="badges"><span class="badge">ステージ</span></div>
+      </div>
+    </article>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>© <span id="currentYear"></span> 文化祭実行委員会</p>
+    <nav class="footer-nav">
+      <a href="index.html">ホーム</a>
+      <a href="timetable.html">タイムテーブル</a>
+    </nav>
+    <div id="footerSocial" class="footer-social" aria-hidden="false">
+      <a href="https://www.instagram.com/your_account" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="white" opacity="0.95"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white" opacity="0.95"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
+  <div id="bgOverlay" class="bg-overlay" aria-hidden="true"></div>
