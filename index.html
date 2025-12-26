@@ -62,29 +62,59 @@
       <div class="hero-illustration" aria-hidden="true"></div>
     </div>
   </section>
+  
+  <section class="card" style="margin-top:0.6rem; display:flex; align-items:center; gap:1rem; flex-direction:column; text-align:center;">
+    <div style="max-width:900px;">
+      <h2 style="margin:0 0 0.4rem; font-size:1.6rem;">ようこそ！文化祭のワクワク体験を探そう</h2>
+      <p class="muted" style="margin:0 0 0.8rem;">今年は舞台・展示・模擬店など、多彩な企画が目白押しです。気になる企画はカテゴリで絞り込んで、当日は会場をめぐる冒険に出かけましょう！</p>
+      <div style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;">
+        <a href="projects.html#projectsGrid" class="button">注目企画を見る</a>
+        <a href="timetable.html" class="button" style="background:var(--accent);">タイムテーブルを見る</a>
+        <a href="info.html" class="button" style="background:linear-gradient(90deg,var(--accent),var(--main));">参加方法を確認</a>
+      </div>
+    </div>
+  </section>
 
   <div id="contentArea">
-    <!-- YAML の内容を静的に埋め込んであります（news, map, poster, highlights） -->
-    <section class="card" id="news">
-      <h2>最新情報</h2>
-      <p>公式Instagramはフッターのリンクからご覧ください。最新のお知らせや写真を随時投稿します。加えて、当日はタイムテーブルの変更や当日の見どころ、来場者向けの注意事項などを随時発信します。特に天候に関わる変更や入場整理の案内はInstagramのストーリーズで速報を出す予定です。</p>
+    <section class="card">
+      <h2>注目のプログラム</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:0.8rem;">
+        <article class="post-card">
+          <h3>サイエンスショー（科学部）</h3>
+          <p class="muted">大きな反応と小さな化学の驚きを体験できるステージ。親子で楽しめます。</p>
+          <a href="projects.html#" class="button">詳しく見る</a>
+        </article>
+        <article class="post-card">
+          <h3>お菓子カフェ（家庭科）</h3>
+          <p class="muted">手作りスイーツの限定メニュー。すぐに売り切れる人気企画です。</p>
+          <a href="projects.html#" class="button">詳しく見る</a>
+        </article>
+        <article class="post-card">
+          <h3>フォト展示（写真部）</h3>
+          <p class="muted">1年間の活動の集大成を展示。作品の裏話も楽しめます。</p>
+          <a href="projects.html#" class="button">詳しく見る</a>
+        </article>
+      </div>
     </section>
 
-    <section class="card" id="map">
-      <h2>校内マップ</h2>
-      <p>来場者向けの校内案内図です。</p>
-      <a href="assets/map.pdf" download class="button">📄 校内マップPDFを開く</a>
+    <section class="card">
+      <h2>来場のヒント</h2>
+      <ul style="margin-top:0.6rem;color:var(--muted);">
+        <li>人気企画は早めに満席になることがあるので、午前中の来場がおすすめです。</li>
+        <li>会場内は混雑します。お子様連れの方は集合場所を事前に決めておきましょう。</li>
+        <li>スタンプラリーやワークショップは材料がなくなり次第終了です。</li>
+      </ul>
     </section>
 
-    <section class="card" id="poster">
-      <h2>ポスター</h2>
-      <p>今年の公式ポスターです。会場内の掲示や申込窓口で配布します。ポスターには見どころや会場配置のQRコードも掲載していますので、来場前に一度ご確認ください。</p>
-      <img src="assets/sample-poster.jpg" alt="公式ポスター" style="max-width:320px;border-radius:10px;margin-top:0.6rem;">
-    </section>
-
-    <section class="card" id="highlights">
-      <h2>イベントハイライト</h2>
-      <p>今年の文化祭では、学生主体のパフォーマンスやワークショップが豊富に揃っています。午前は吹奏楽部の演奏でスタートし、午後には演劇部の上演や有志によるステージ企画が続きます。また、科学部のサイエンスショーや家庭科のスイーツ販売など、子どもから大人まで楽しめる企画が目白押しです。各企画の開催時間や場所はタイムテーブルをご確認ください。</p>
+    <section class="card">
+      <h2>最新のお知らせ（ブログ）</h2>
+      <div class="blog-list" style="margin-top:0.6rem;">
+        <article class="post-card">
+          <h3>実行委員からのお知らせ：当日の集合場所について</h3>
+          <p class="muted">当日は正門前が集合場所になります。開場時間は9:00です。係の指示に従ってください。</p>
+          <a href="blog/sample-post.html" class="button">続きを読む</a>
+        </article>
+      </div>
     </section>
   </div>
 
@@ -96,12 +126,7 @@
     window.__heroCta = { text: '企画を見る', url: 'projects.html' };
   </script>
 
-  <!-- フォールバック/静的なカード（YAML がない場合に表示される簡易コンテンツ） -->
-  <section class="card">
-    <h2>校内マップ</h2>
-    <p>来場者向けの校内案内図です。</p>
-    <a href="assets/map.pdf" download class="button">📄 校内マップPDFを開く</a>
-  </section>
+  <!-- コンテンツは CSV により管理します -->
 
 </main>
 

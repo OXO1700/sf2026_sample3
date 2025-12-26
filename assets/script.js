@@ -25,6 +25,109 @@ window.addEventListener('error', function (e) {
   } catch (ignore) {}
 });
 
+/* Starfield overlay: create a full-viewport canvas and make stars twinkle on scroll */
+(function () {
+  let canvas, ctx, stars = [], w = 0, h = 0, rafId, lastScrollY = (window.scrollY || 0);
+
+  function resizeCanvas() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function createStars(n) {
+    stars = [];
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        baseR: Math.random() * 1.4 + 0.4,
+        tw: 0,
+        alpha: Math.random() * 0.7 + 0.15
+      });
+    }
+  }
+
+  function draw() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      const twFactor = Math.max(0, s.tw);
+      const r = s.baseR * (1 + twFactor * 0.9);
+      const alpha = Math.min(1, s.alpha + twFactor * 0.8);
+
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(255,255,255,0.95)';
+      ctx.shadowBlur = 6 * (1 + twFactor);
+      ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (s.tw > 0) s.tw -= 0.08; // fade twinkle
+    }
+
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function handleScroll() {
+    const now = window.scrollY || 0;
+    const delta = Math.abs(now - lastScrollY);
+    lastScrollY = now;
+
+    // number of stars to trigger depends on scroll delta
+    const count = Math.min(60, Math.max(3, Math.floor(delta / 18)));
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(Math.random() * stars.length);
+      if (stars[idx]) stars[idx].tw = 0.6 + Math.random() * 1.6;
+    }
+  }
+
+  let scrollTimer = null;
+  function onScrollThrottled() {
+    if (scrollTimer) clearTimeout(scrollTimer);
+    handleScroll();
+    // small debounce to avoid too-frequent churn
+    scrollTimer = setTimeout(function () { scrollTimer = null; }, 40);
+  }
+
+  function initStarField() {
+    if (document.body.querySelector('.star-overlay')) return; // already initialized
+    canvas = document.createElement('canvas');
+    canvas.className = 'star-overlay';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.position = 'fixed';
+    canvas.style.inset = '0';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '0';
+    document.body.insertBefore(canvas, document.body.firstChild);
+    ctx = canvas.getContext('2d');
+
+    resizeCanvas();
+    const density = Math.max(90, Math.floor((window.innerWidth * window.innerHeight) / 4200));
+    createStars(density);
+
+    window.addEventListener('resize', function () {
+      resizeCanvas();
+      createStars(Math.max(80, Math.floor((window.innerWidth * window.innerHeight) / 4200)));
+    });
+
+    window.addEventListener('scroll', onScrollThrottled, { passive: true });
+    // start animation
+    draw();
+  }
+
+  // If DOM already loaded, init immediately; otherwise wait for DOMContentLoaded
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initStarField, 60);
+  } else {
+    document.addEventListener('DOMContentLoaded', initStarField);
+  }
+
+  // expose for debugging (optional)
+  window.__initStarField = initStarField;
+})();
+
 function updateCountdown() {
   if (!target) return;
   const now = new Date();
@@ -44,6 +147,35 @@ function updateCountdown() {
 
   // show as: "あと X日 Y時間 Z分" for clearer emphasis
   el.textContent = `あと ${d}日 ${h}時間 ${m}分`;
+}
+
+// Animate numbers from 0 to final countdown values over ~2 seconds, then set final digital text
+function animateCountUp(el, targetDate) {
+  if (!el || !targetDate) return;
+  const duration = 2000;
+  const startTime = performance.now();
+
+  const now = new Date();
+  const diffFinal = Math.max(0, targetDate - now);
+  const finalD = Math.floor(diffFinal / 86400000);
+  const finalH = Math.floor(diffFinal / 3600000) % 24;
+  const finalM = Math.floor(diffFinal / 60000) % 60;
+
+  function tick(ts) {
+    const t = Math.min(1, (ts - startTime) / duration);
+    const ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
+
+    const curD = Math.floor(finalD * ease);
+    const curH = Math.floor(finalH * ease);
+    const curM = Math.floor(finalM * ease);
+
+    el.textContent = `あと ${curD}日 ${curH}時間 ${curM}分`;
+
+    if (t < 1) requestAnimationFrame(tick);
+    else updateCountdown();
+  }
+
+  requestAnimationFrame(tick);
 }
 
 function renderCard(card) {
@@ -208,6 +340,126 @@ function initProjectFilters() {
   } catch (e) { console.error('initProjectFilters failed', e); }
 }
 
+// Transform existing .badges into #tags (up to 3) and add collapse toggle for description
+function initProjectTagsAndToggles() {
+  try {
+    const cards = Array.from(document.querySelectorAll('.project-card'));
+    if (!cards.length) return;
+
+    cards.forEach(function (card) {
+      const body = card.querySelector('.project-body');
+      if (!body) return;
+
+      // Collect tag texts from .badges .badge
+      let tags = [];
+      const badgesWrap = body.querySelector('.badges');
+      if (badgesWrap) {
+        const badges = Array.from(badgesWrap.querySelectorAll('.badge'));
+        badges.forEach(function (b) {
+          const t = b.textContent && b.textContent.trim();
+          if (t) tags.push(t);
+        });
+      }
+
+      // Fallback: use data-category attribute if no badges found
+      if (tags.length === 0) {
+        const cat = card.getAttribute('data-category');
+        if (cat) tags.push(cat);
+      }
+
+      // Limit to 3 tags
+      tags = tags.slice(0, 3);
+
+      if (tags.length) {
+        const tagList = document.createElement('div');
+        tagList.className = 'tag-list';
+        tags.forEach(function (t) {
+          const el = document.createElement('span');
+          el.className = 'tag';
+          el.textContent = '#' + t;
+          tagList.appendChild(el);
+        });
+
+        if (badgesWrap) {
+          badgesWrap.replaceWith(tagList);
+        } else {
+          body.appendChild(tagList);
+        }
+      }
+
+      // Add collapse toggle to the left of the title to show/hide description (exclude tags)
+      const title = body.querySelector('h3');
+      const desc = body.querySelector('p');
+      if (title) {
+        // avoid duplicate initialization
+        if (title.__toggleInit) return;
+        title.__toggleInit = true;
+
+        const header = document.createElement('div');
+        header.className = 'project-header';
+
+        const btn = document.createElement('button');
+        btn.className = 'collapse-toggle';
+        btn.type = 'button';
+        // start collapsed by default
+        btn.setAttribute('aria-expanded', 'false');
+        btn.title = '説明を折りたたむ/展開する';
+        btn.textContent = '+';
+
+        btn.addEventListener('click', function () {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          if (expanded) {
+            if (desc) desc.style.display = 'none';
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = '+';
+            card.classList.add('collapsed');
+          } else {
+                btn.setAttribute('aria-expanded', 'false');
+                btn.title = '説明を展開/折りたたむ';
+                btn.textContent = '+'; // initial collapsed state
+          }
+                btn.addEventListener('click', function () {
+                  const expanded = btn.getAttribute('aria-expanded') === 'true';
+                  if (expanded) {
+                    // collapse
+                    if (desc) desc.style.display = 'none';
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.textContent = '+';
+                    card.classList.add('collapsed');
+                  } else {
+                    // expand
+                    if (desc) desc.style.display = '';
+                    btn.setAttribute('aria-expanded', 'true');
+                    btn.textContent = '−';
+                    card.classList.remove('collapsed');
+                  }
+                });
+        });
+
+        // Insert header before title and move title into header
+        title.parentNode.insertBefore(header, title);
+        header.appendChild(btn);
+        header.appendChild(title);
+
+        // set initial collapsed state (hide description and shrink card)
+        if (desc) desc.style.display = 'none';
+        card.classList.add('collapsed');
+      }
+    });
+  } catch (e) {
+    console.error('initProjectTagsAndToggles failed', e);
+  }
+}
+
+// Run initProjectTagsAndToggles on DOM ready (safe if DOM already parsed)
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+  setTimeout(initProjectTagsAndToggles, 40);
+} else {
+  document.addEventListener('DOMContentLoaded', initProjectTagsAndToggles);
+}
+
+/* CSV-driven project import removed — static project cards only. */
+
 // DOM ready: attach menu toggle and load YAML content
 document.addEventListener('DOMContentLoaded', function () {
   const menuBtn = document.getElementById('menuToggle');
@@ -260,6 +512,12 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) { console.error('init static content failed', e); }
     // initialize scroll background overlay behavior
     initScrollBackground();
+
+    // start flip-style countdown animation then switch to digital (if target set)
+    try {
+      const countdownEl = document.getElementById('countdown');
+      if (countdownEl && target) animateCountUp(countdownEl, target);
+    } catch (e) {}
 
     return; // skip fetch since content already embedded
   }
@@ -364,6 +622,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // initialize scroll background overlay behavior after content is rendered
         initScrollBackground();
+
+        // start flip-style countdown animation then switch to digital (if target set)
+        try {
+          const countdownEl = document.getElementById('countdown');
+          if (countdownEl && target) animateCountUp(countdownEl, target);
+        } catch (e) {}
 
             
 
